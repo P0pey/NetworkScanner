@@ -1,0 +1,6 @@
+nmap
+csv
+whois
+dns.resolver
+subprocess
+json
