@@ -1,3 +1,3 @@
 # Network Scanner
 
-This is an entertaining project. A small network scanner application, nmaplike.
+This is an entertaining project. A small network scanner application, a tiny NMAP.
