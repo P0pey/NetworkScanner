@@ -18,3 +18,18 @@ sudo apt install nmap
 ```
 
 And of course python3.8 => [python](https://www.python.org/)
+
+## Install
+
+Create an **"/etc/Mail.json"** file to register your mail identification and SMTP server informations.
+
+Use this template:```
+{
+    "Port": <port number>,
+    "SMTP_SSL": <SMTP url>,
+    "Mail": <your mail>,
+    "Password" : <your mail password>
+}
+
+```
+Or see Template.json file.
