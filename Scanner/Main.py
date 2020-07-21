@@ -5,7 +5,7 @@
 #           Import               #
 ##################################
 
-import socket, json, os
+import socket, json, os, time
 from xml.dom import minidom
 
 ##################################
@@ -42,7 +42,7 @@ def set_disconnect(db):
     return db
 
 # Update the database with new ip
-def update(db):
+def update(db, time_date):
     db = set_disconnect(db)
     hosts = minidom.parse('/tmp/res')
     ip = hosts.getElementsByTagName('address')
@@ -53,6 +53,7 @@ def update(db):
         while j < len(db['Hosts']) and not find:
             if db['Hosts'][j]['IP'] == ip[i].attributes['addr'].value:
                 db['Hosts'][j]['connect'] = 1
+                db['Hosts'][j]['Time'] = time_date
                 find = True
             j += 1
         if not find:
@@ -60,6 +61,7 @@ def update(db):
                 'Name': name[i].attributes['name'].value,
                 'IP': ip[i].attributes['addr'].value,
                 'IP_Type': ip[i].attributes['addrtype'].value,
+                'Time': time_date,
                 'connect': 1
             })
     return db
@@ -75,6 +77,16 @@ def save(db):
 
 if __name__ == "__main__":
 
+    # Generate Output date
+    time_tmp = time.localtime(time.time())
+    year = str(time_tmp[0])
+    month = str(time_tmp[1])
+    day = str(time_tmp[2])
+    hour = str(time_tmp[3])
+    minute = str(time_tmp[4])
+    seconde = str(time_tmp[5])
+    time_date = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + seconde
+
     #Remove nmap res file
     if os.path.isfile('/tmp/res'):
         os.remove('/tmp/res')
@@ -86,5 +98,5 @@ if __name__ == "__main__":
 
     ip = get_IP()
     get_connected_hosts(ip)
-    database = update(database)
+    database = update(database, time_date)
     save(database)
