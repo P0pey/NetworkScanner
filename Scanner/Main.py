@@ -5,7 +5,7 @@
 #           Import               #
 ##################################
 
-import socket, json, os, time
+import socket, json, os, time, smtplib
 from xml.dom import minidom
 
 ##################################
@@ -47,6 +47,7 @@ def update(db, time_date):
     hosts = minidom.parse('/tmp/res')
     ip = hosts.getElementsByTagName('address')
     name = hosts.getElementsByTagName('hostname')
+    New = []
     for i in range(len(ip)):
         find = False
         j = 0
@@ -64,7 +65,35 @@ def update(db, time_date):
                 'Time': time_date,
                 'connect': 1
             })
+            New.append((ip[i].attributes['addr'].value, name[i].attributes['name'].value))
+    if len(New) > 0:
+        send_mail(New)
     return db
+
+# Send a notification when there is a new connection
+def send_mail(List):
+    with open('/etc/Mail.json') as json_file:
+        data = json.load(json_file)
+
+    message = ""
+    l = len(List)
+    if l == 1:
+        message = "1 new connection => IP: " + List[0][0] + ' & Name: ' + List[0][1]
+    else:
+        message = str(l) + " new connections"
+        i = 1
+        for ip, name in List:
+            if i < l:
+                message += str(i) + '=> IP: ' + ip + ' & Name: ' + name + '\n'
+            else:
+                message += str(i) + '=> IP: ' + ip + ' & Name: ' + name
+            i += 1
+
+    server = smtplib.SMTP(data['SMTP_SSL'], data['Port'])
+    server.starttls()
+    server.login(data['Mail'], data['Password'])
+    server.sendmail(data['Mail'], data['Mail'], message)
+    server.quit()
 
 # Save database in a JSON file
 def save(db):
