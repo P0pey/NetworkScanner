@@ -91,8 +91,8 @@ def send_mail(List):
 
     server = smtplib.SMTP(data['SMTP_SSL'], data['Port'])
     server.starttls()
-    server.login(data['Mail'], data['Password'])
-    server.sendmail(data['Mail'], data['Mail'], message)
+    server.login(data['Sender_Mail'], data['Password'])
+    server.sendmail(data['Sender_Mail'], data['Receiver_Mail'], message)
     server.quit()
 
 # Save database in a JSON file

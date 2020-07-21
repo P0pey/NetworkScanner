@@ -28,7 +28,8 @@ Use this template:
 {
     "Port": <port number>,
     "SMTP_SSL": <SMTP url>,
-    "Mail": <your mail>,
+    "Sender_Mail": <your mail>,
+    "Receiver_Mail": <your mail>,
     "Password" : <your mail password>
 }
 ```
