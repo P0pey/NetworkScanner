@@ -84,7 +84,7 @@ def send_mail(List):
         i = 1
         for ip, name in List:
             if i < l:
-                message += str(i) + '=> IP: ' + ip + ' & Name: ' + name + '\n'
+                message += str(i) + '=> IP: ' + ip + ' & Name: ' + name + ', '
             else:
                 message += str(i) + '=> IP: ' + ip + ' & Name: ' + name
             i += 1
