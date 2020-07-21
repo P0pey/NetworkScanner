@@ -14,8 +14,8 @@ from xml.dom import minidom
 
 # Open the database (JSON)
 def get_data():
-    if os.path.isfile('../tmp/Hosts.txt'):
-        with open('../tmp/Hosts.txt') as json_file:
+    if os.path.isfile('/tmp/Hosts.txt'):
+        with open('/tmp/Hosts.txt') as json_file:
             data = json.load(json_file)
         return data
     data = {}
@@ -32,7 +32,7 @@ def get_IP():
 
 # NMAP scan (get all host connect on the same network)
 def get_connected_hosts(IP):
-    command = 'nmap -sn ' + IP + '/24 -oX ../tmp/res'
+    command = 'nmap -sn ' + IP + '/24 -oX /tmp/res'
     os.system(command)
 
 # Just put all databse ip down
@@ -44,7 +44,7 @@ def set_disconnect(db):
 # Update the database with new ip
 def update(db):
     db = set_disconnect(db)
-    hosts = minidom.parse('../tmp/res')
+    hosts = minidom.parse('/tmp/res')
     ip = hosts.getElementsByTagName('address')
     name = hosts.getElementsByTagName('hostname')
     for i in range(len(ip)):
@@ -66,7 +66,7 @@ def update(db):
 
 # Save database in a JSON file
 def save(db):
-    with open('../tmp/Hosts.txt', 'w') as outfile:
+    with open('/tmp/Hosts.txt', 'w') as outfile:
         json.dump(db, outfile, indent=4)
 
 ##################################
@@ -75,20 +75,16 @@ def save(db):
 
 if __name__ == "__main__":
 
-    # Create a tmp folder
-    if not os.path.isdir('../tmp/'):
-        os.mkdir('../tmp/')
     #Remove nmap res file
-    if os.path.isfile('../tmp/res'):
-        os.remove('../tmp/res')
+    if os.path.isfile('/tmp/res'):
+        os.remove('/tmp/res')
 
     database = get_data()
     # Remove databse file
-    if os.path.isfile('../tmp/Hosts.txt'):
-        os.remove('../tmp/Hosts.txt')
+    if os.path.isfile('/tmp/Hosts.txt'):
+        os.remove('/tmp/Hosts.txt')
 
     ip = get_IP()
     get_connected_hosts(ip)
     database = update(database)
-    print(json.dumps(database, indent=4))
     save(database)
