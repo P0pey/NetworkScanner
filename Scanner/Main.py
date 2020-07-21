@@ -66,8 +66,8 @@ def update(db, time_date):
                 'connect': 1
             })
             New.append((ip[i].attributes['addr'].value, name[i].attributes['name'].value))
-    if len(New) > 0:
-        send_mail(New)
+#    if len(New) > 0:
+#        send_mail(New)
     return db
 
 # Send a notification when there is a new connection
