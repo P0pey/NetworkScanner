@@ -1,0 +1,6 @@
+{
+    "Port": <port number>,
+    "SMTP_SSL": <SMTP url>,
+    "Mail": <your mail>,
+    "Password" : <your mail password>
+}
